@@ -1,0 +1,24 @@
+# Maintainer: Jackson Novak <jacksonnovak@proton.me>
+
+pkgname='xero-scripts'
+pkgver=r2.45b6f34
+pkgrel=1
+pkgdesc='XeroLinux Post Installation Scripts'
+arch=("any")
+url='https://github.com/XeroLinuxDev/xero-scripts'
+license=('MIT')
+makedepends=('git')
+source=("git+$url")
+md5sums=('SKIP')
+
+pkgver() {
+	cd "$pkgname"
+	printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+package() {
+	cd "$pkgname"
+
+	mkdir -p $pkgdir/usr/share/xeroscripts
+	install -Dm755 ./scripts/* $pkgdir/usr/share/xeroscripts
+}

@@ -1,0 +1,32 @@
+# Maintainer: Jackson Novak <jacksonnovak@proton.me>
+
+pkgname='xero-cli'
+pkgver=r3.a295fa2
+pkgrel=1
+pkgdesc='XeroLinux Post Installation CLI Tool'
+arch=("any")
+url='https://github.com/XeroLinuxDev/xero-cli'
+license=('MIT')
+makedepends=('rustup' 'git')
+depends=('xero-scripts')
+source=("git+$url")
+md5sums=('SKIP')
+
+_binname='xero-cli'
+
+pkgver() {
+	cd "$pkgname"
+	printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+build() {
+	cd "$pkgname"
+	cargo build --release
+}
+
+package() {
+	cd "$pkgname"
+
+	install -Dm755 "./target/release/$_binname" "$pkgdir/usr/bin/$_binname"
+	install -Dm644 "./README.md" "$pkgdir/usr/share/doc/$pkgname"
+}
